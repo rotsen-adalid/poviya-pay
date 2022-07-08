@@ -19,7 +19,11 @@
                     @if ($this->payment_order['error'] == 1)
                         <p class="pt-1 mt-2 mb-0 space-x-2 text-sm font-bold text-gray-800">
                             {{$this->payment_order['data']['name']['lastname']}}
-                        </p>    
+                        </p>
+                    @else    
+                        <p class="pt-1 mt-2 mb-0 space-x-2 text-sm font-bold text-gray-800">
+                            {{__('Invited user')}}
+                        </p>
                     @endif
                 @else
                 <p class="pt-1 mt-2 mb-0 space-x-2 text-sm font-semibold">

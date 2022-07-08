@@ -13,12 +13,12 @@ class NavigationYosolidario extends Component
     public $payment_order;
 
     public function mount($code_collection)
-    {   dd($this->httpHostYoSolidario());
+    {   
         // user
         $responsePaymentOrder = Http::post($this->httpHostYoSolidario().'/api/payment_order/petition/code_collection',[
             'code_collection' => $code_collection
             ]);
-        $this->payment_order =  $responsePaymentOrder->json(); dd($this->payment_order);
+        $this->payment_order =  collect($responsePaymentOrder->json()); //dd($this->payment_order);
     }
 
     public function render()

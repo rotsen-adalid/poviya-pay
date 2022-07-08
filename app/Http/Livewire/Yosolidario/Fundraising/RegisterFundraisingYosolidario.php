@@ -55,59 +55,25 @@ class RegisterFundraisingYosolidario extends Component
     // language
     public $lang;
 
-    public function mount($campaign_id, $campaign_reward_id, $money_id, $country_id, $user_id, $lang)
+    public function  mount($code_collection, $device_fingerprint_id)
     {
-        if(isset($_SERVER['HTTP_REFERER'])) {
-            $url = $_SERVER['HTTP_REFERER'];
-            //dd($url);
-        }
-
+        $responsePaymentOrder = Http::post($this->httpHostYoSolidario().'/api/payment_order/petition/code_collection',[
+            'code_collection' => $code_collection
+            ]);
+        $this->payment_order =  collect($responsePaymentOrder->json());     //dd($this->payment_order);
+        
         // money
         $responseMoney = Http::post($this->httpHostYoSolidario().'/api/money',[
-                                        'money_id' => $money_id
-                                        ]);
+            'money_id' => $this->payment_order['data']['money_pay_id']
+            ]);
         $this->money_pay = collect($responseMoney->json());
-        
-        // campaign
-        $responseCampaign = Http::post($this->httpHostYoSolidario().'/api/campaign',[
-                            'campaign_id' => $campaign_id
-                            ]);
-        $this->campaign =  collect($responseCampaign->json());
 
-        // campaign reward
-        $responseCampaignReward = Http::post($this->httpHostYoSolidario().'/api/campaign_reward',[
-                            'campaign_reward_id' => $campaign_reward_id
-                            ]);
-        $this->campaignReward =  collect($responseCampaignReward->json());  
-
-        // user
-        $responseUser = Http::post($this->httpHostYoSolidario().'/api/user',[
-            'user_id' => $user_id
-            ]);
-        $this->user =  collect($responseUser->json());          //dd($this->user);
-
-        // country
-        $responseCountry = Http::post($this->httpHostYoSolidario().'/api/country',[
-            'country_id' => $country_id
-            ]);
-        $this->country =  collect($responseCountry->json());    //dd($this->country);
-
-        // lang
-        session()->forget('locale');
-        session()->put('locale', $lang);
-        $this->lang = $lang;
-
-        $this->email = $this->user['email'];
-        
         //card
         $this->card_type;
         $this->card_mm = date("m");
         $this->card_yy = date("Y");
 
-        $this->collectionCountries();
-        $this->countryPrefix();
-        $this->countryStates();
-        $this->amountPayment();
+        //$this->amountPayment();
     }
 
     public function render()

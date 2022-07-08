@@ -335,7 +335,6 @@
     "No": "No",
     "Yes": "Si",
     "Quantity": "Cantidad",
-    "": "Detalles",
     "Questions": "Preguntas",
     "Rewards": "Recompensas",
     "Reward": "Recompensa",
@@ -968,5 +967,7 @@
     "People out there want to help you.": "Hay gente que quiere ayudarte.",
     "We'll guide you with tips along the way.": "Te guiaremos con consejos en cada paso.",
     "Social help community": "Comunidad de ayuda social",
-    "Date of Last Revision: :date": "Fecha de la última revisión: :date"
+    "Date of Last Revision: :date": "Fecha de la última revisión: :date",
+    "Invited user": "Usuario invitado",
+    "Details of the transaction": "Detalles de la transacción"
 }   

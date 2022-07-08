@@ -9,8 +9,10 @@
             <title>{{ $title }}</title>
         @endif
 
-        <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+         <!-- Fonts -->
+         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+         <!-- https://material.io/resources/icons/?style=outline -->
+         <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
 
         <!-- Styles -->
         @livewireStyles
@@ -18,10 +20,10 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased text-sm">
         <x-jet-banner />
 
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen" style="background-color:#f8f8f8">
             @if (isset($menu))
                 {{$menu}}
             @endif
