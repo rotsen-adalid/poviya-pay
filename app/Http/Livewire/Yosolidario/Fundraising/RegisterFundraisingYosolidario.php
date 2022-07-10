@@ -60,20 +60,18 @@ class RegisterFundraisingYosolidario extends Component
         $responsePaymentOrder = Http::post($this->httpHostYoSolidario().'/api/payment_order/petition/code_collection',[
             'code_collection' => $code_collection
             ]);
-        $this->payment_order =  collect($responsePaymentOrder->json());     //dd($this->payment_order);
-        
-        // money
-        $responseMoney = Http::post($this->httpHostYoSolidario().'/api/money',[
-            'money_id' => $this->payment_order['data']['money_pay_id']
-            ]);
-        $this->money_pay = collect($responseMoney->json());
+        $this->paymentOrder =  collect($responsePaymentOrder->json());     //dump($this->paymentOrder);
+
+        // device fingerprint
+        $this->device_fingerprint_id = $device_fingerprint_id;
 
         //card
         $this->card_type;
         $this->card_mm = date("m");
         $this->card_yy = date("Y");
 
-        //$this->amountPayment();
+        $this->amountPayment();
+        $this->payData();
     }
 
     public function render()
@@ -101,7 +99,7 @@ class RegisterFundraisingYosolidario extends Component
         // validate
         return [
             //'amount_pay' => "required|numeric|between:$this->collaborate_min,$this->collaborate_max",
-            'amount_pay' => 'required|numeric|between:5,1000',
+            'amount_pay' => 'required|numeric|between:3,1000',
             'name' => 'required',
             'lastname' => 'required',
             'identification' => 'required|min:5|max:20',
@@ -150,19 +148,48 @@ class RegisterFundraisingYosolidario extends Component
         $this->validateOnly($propertyName);
     }
     
-    public function pay()
+    public function payData()
     {
-        $this->validate();
-
-        if(Auth()->id())
+        if($this->paymentOrder['data']['user_id'] != null)
         {
             $this->merchant_defined_data1 = 'YES';
         } else {
             $this->merchant_defined_data1 = 'NO';
         }
+  
+        $params = [
+                
+            'transaction_type' => 'sale',
+            'reference_number' => $this->paymentOrder['data']['code_collection'],
+            'amount' => $this->paymentOrder['data']['amount_transaction'],
+            'currency' => $this->money_transaction['currency_iso'],
+            'payment_method' => 'card',
+            'bill_to_forename' => $this->paymentOrder['data']['name'],
+            'bill_to_surname' => $this->paymentOrder['data']['lastname'],
+            'bill_to_email' =>  $this->paymentOrder['data']['payment_order_contact']['email'],
+            'bill_to_phone' => $this->paymentOrder['data']['payment_order_contact']['phone'],
+            'bill_to_address_line1' =>  $this->paymentOrder['data']['address'],
+            'bill_to_address_city' =>  $this->paymentOrder['data']['city'],
+            'bill_to_address_state' => $this->countryStateOne()['code'],
+            'bill_to_address_country' => $this->countryOne()['code'],
+            'bill_to_address_postal_code' => $this->paymentOrder['data']['postal_code'],
+            'device_fingerprint_id' => $this->device_fingerprint_id,
 
-        $value = $this->transaction();
+            'merchant_defined_data1' => $this->merchant_defined_data1,
+            'merchant_defined_data4' => date("d") . date("m").date("Y"),
+            'merchant_defined_data6' => 'NO',
+            'merchant_defined_data9' => 'Pagina web', //Correo electrónico, Red Social, Pagina Web
+            'merchant_defined_data11' => $this->paymentOrder['data']['identification'],
+            'merchant_defined_data87' =>  $this->paymentOrder['data']['code_collection'],
+            'merchant_defined_data90' => 'Suscripcion',
+            'merchant_defined_data91' => $this->paymentOrder['data']['amount_transaction']
+        ];
         
+        $responseSigneddatafileds = Http::post($this->httpHostYoSolidario().'/api/cybersource/signeddatafields', $params);
+
+        $values = $responseSigneddatafileds->json();
+        $this->params = $values['data']; 
+        $this->signInput = $values['sign']; //dd($this->signInput);  
         /*
         if($this->payment_method_ys == 'CARD_CYBERSOURCE' and $value['error'] == 0) { 
             $this->code_collection = $value['code_collection'];
@@ -223,7 +250,26 @@ class RegisterFundraisingYosolidario extends Component
         } else {
             $this->emit('bannerDanger', 'Error!');
         }*/
-        return redirect()->to($this->httpHostPoviyaPay().'/service/ys/f/checkout/'.$value['code_collection'].'/'.$this->lang);
+        //return redirect()->to($this->httpHostPoviyaPay().'/service/ys/f/checkout/'.$value['code_collection'].'/'.$this->lang);
+    }
+
+    public function payCard()
+    {
+        $this->card_expiry_date = $this->card_mm.'-'.$this->card_yy;
+        $this->card_number = str_replace(' ', '', $this->card_number);
+        $this->card_cvn = str_replace(' ', '', $this->card_cvn);
+
+        $card_type_number = substr($this->card_number, 0, 1);
+        if($card_type_number == 4)
+        {
+            $this->card_type = '001';
+        } elseif($card_type_number == 5)
+        {
+            $this->card_type = '002';
+        }
+
+        $this->formCard = true;
+        $this->formInfo = false;
     }
 
     public function transaction()
@@ -329,36 +375,37 @@ class RegisterFundraisingYosolidario extends Component
 
     public function countryOne()
     {
-        if($this->country_id)
-        {
-            foreach($this->collection_countries as $item)
-            {
-                if($item['id'] == $this->country_id)
-                {
-                    $code = $item['code'];
-                }
-            }
-            return $code;
-        }
+        $responseCountry = Http::post($this->httpHostYoSolidario().'/api/country',[
+            'country_id' => $this->paymentOrder['data']['country_id']
+            ]);
+        return ($responseCountry->json());
     }
 
     public function countryStateOne()
     {
-        if($this->country_state_id > 0)
-        {  
-            foreach($this->collection_country_states as $item)
-            {
-                if($item['id'] == $this->country_state_id)
-                {
-                    $code = $item['code'];
-                }
-            }
-            return $code;
-        }
+        $responseCountryState = Http::post($this->httpHostYoSolidario().'/api/country/state',[
+            'country_state_id' => $this->paymentOrder['data']['country_state_id']
+            ]);
+        return ($responseCountryState->json());
     }
 
     public function amountPayment()
     {
+        // money pay
+        $responseMoney = Http::post($this->httpHostYoSolidario().'/api/money',[
+            'money_id' => $this->paymentOrder['data']['money_pay_id']
+            ]);
+        $this->money_pay = collect($responseMoney->json());
+
+        $this->amount_pay = $this->paymentOrder['data']['amount_pay'];
+
+        // money transaction
+        $responseMoney = Http::post($this->httpHostYoSolidario().'/api/money',[
+            'money_id' => $this->paymentOrder['data']['money_transaction_id']
+            ]);
+        $this->money_transaction = collect($responseMoney->json());
+
+        /*
         $responseMoney = Http::post($this->httpHostYoSolidario().'/api/money-iso',[
                             'iso' => 'USD'
                             ]);
@@ -386,6 +433,7 @@ class RegisterFundraisingYosolidario extends Component
         $this->amount_transaction = $this->convertMoney($this->amount_pay, $this->money_pay['id'], $moneyBOB['id']);
         $this->amount_transaction = $this->numberBreakdown($this->amount_transaction);
         $this->money_transaction = $moneyBOB;
+        */
     }
 
     public function getTotalPayProperty()

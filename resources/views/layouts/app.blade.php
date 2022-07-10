@@ -8,11 +8,12 @@
         @if (isset($title))
             <title>{{ $title }}</title>
         @endif
+        <link rel="icon" type="image/png" href="{{asset('images/icono.png')}}" />
 
-         <!-- Fonts -->
-         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
-         <!-- https://material.io/resources/icons/?style=outline -->
-         <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+        <!-- https://material.io/resources/icons/?style=outline -->
+        <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
 
         <!-- Styles -->
         @livewireStyles

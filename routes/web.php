@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\App;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+/*
 Route::get('/', function () {
     return view('welcome');
 });
@@ -27,7 +27,29 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+*/
 
+Route::get('/', function () {
+    return view('app-container');
+})->name('home');
+
+Route::get('/login', function () {
+    return redirect()->route('home');
+})->name('login');
+
+Route::get('/register', function () {
+    return redirect()->route('home');
+})->name('register');
+
+//------------------------------------------CYBERSOURCE----------------------------------------
+/*
+/*Route::put('/cybersource/receipt', [CyberSourceController::class, 'receipt'])
+->name('cybersource/receipt'); 
+*/
+
+use App\Http\Controllers\CyberSourceController;
+Route::post('/cybersource/receipt', [CyberSourceController::class, 'receipt'])
+->name('cybersource/receipt'); 
 
 Route::get('service/checkout/ys/f/{code_collection}/{lang}', 
 function ($code_collection, $lang) {

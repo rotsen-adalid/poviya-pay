@@ -9,7 +9,7 @@
                     <div class="border border-gray-100 shadow-xl sm:rounded-md sm:overflow-hidden">
                     <div class="p-5 space-y-6 bg-white sm:px-10 sm:pt-8 sm:pb-8">
     
-                        <a href="{{ $this->httpHostYoSolidario().'/'}}" 
+                        <a href="{{ $this->httpHostYoSolidario().'/'.$this->paymentOrder['data']['campaign_payment_order']['campaign']['slug']}}" 
                             class="flex items-center w-auto px-2 py-1 space-x-1">
                             <span class="text-sm material-icons-outlined">arrow_back_ios</span>
                             <span>{{__('Return')}}</span>
@@ -167,7 +167,7 @@
 
                         @if ($formInfo)
                             <div class="px-4 py-0 text-center sm:px-6 ">
-                                <x-button wire:click="pay" wire:loading.attr="disabled" class="px-4 py-2 mt-5 mb-5 text-base">
+                                <x-button wire:click="payCard" wire:loading.attr="disabled" class="px-4 py-2 mt-5 mb-5 text-base">
                                     {{__('Pay now')}}
                                 </x-button>
                             </div>
@@ -176,7 +176,7 @@
                         @if ($formCard)
                             <!--- CARD SEND -->
                             <form class="px-4 py-2 text-center sm:px-6" id="payment_confirmation" 
-                            action="https://secureacceptance.cybersource.com/silent/pay" method="post">
+                            action="https://testsecureacceptance.cybersource.com/silent/pay" method="post">
                                 
                                 @foreach ($this->params as $name => $value)
                                     <input type="hidden" id="{{$name}}" name="{{$name}}" value="{{$value}}">
@@ -209,7 +209,7 @@
                         <div>
                             <div class="">
                                 <div class="block text-sm font-medium text-gray-800">
-                                    {{__('By continuing, you agree to YoSolidario terms and accept our privacy statement.')}}
+                                    {{__('By continuing, you agree to terms and accept our privacy statement.')}}
                                 </div>
                             </div>
                             
