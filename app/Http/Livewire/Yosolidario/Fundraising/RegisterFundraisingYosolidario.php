@@ -185,7 +185,7 @@ class RegisterFundraisingYosolidario extends Component
             'merchant_defined_data91' => $this->paymentOrder['data']['amount_transaction']
         ];
         
-        $responseSigneddatafileds = Http::post($this->httpHostYoSolidario().'/api/cybersource/signeddatafields', $params);
+        $responseSigneddatafileds = Http::post($this->httpHostPoviyaPay().'/api/cybersource/signeddatafields', $params);
 
         $values = $responseSigneddatafileds->json();
         $this->params = $values['data']; 

@@ -100,10 +100,9 @@ trait Utilities {
 
     public function httpHostPoviyaPay()
     {
-        $host = $_SERVER["HTTP_HOST"];
-        if($host == 'poviya-form.test') {
-            $this->hostReturn = 'https://poviya-pay.test';
-        } elseif($host == 'form.poviya.com') {
+        if(env('APP_ENV') != 'production') {
+            $this->hostReturn = 'http://127.0.0.1:1300';
+        } else {
             $this->hostReturn = 'https://pay.poviya.com';
         }
         return $this->hostReturn;
@@ -150,4 +149,5 @@ trait Utilities {
         }
         return $this->hostReturn;
     }
+
 }
