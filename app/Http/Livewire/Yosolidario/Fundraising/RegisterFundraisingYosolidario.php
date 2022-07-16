@@ -16,9 +16,11 @@ use LVR\CreditCard\CardExpirationYear;
 use LVR\CreditCard\CardExpirationMonth;
 use App\Http\Traits\Ipapi;
 use Illuminate\Support\Facades\App;
+use App\Http\Traits\CyberSource;
 
 class RegisterFundraisingYosolidario extends Component
 {
+    use CyberSource;
     use Ipapi;
     use Utilities;
 
@@ -57,6 +59,7 @@ class RegisterFundraisingYosolidario extends Component
 
     public function  mount($code_collection, $device_fingerprint_id)
     {
+        
         $responsePaymentOrder = Http::post($this->httpHostYoSolidario().'/api/payment_order/petition/code_collection',[
             'code_collection' => $code_collection
             ]);
@@ -185,9 +188,11 @@ class RegisterFundraisingYosolidario extends Component
             'merchant_defined_data91' => $this->paymentOrder['data']['amount_transaction']
         ];
         
-        $responseSigneddatafileds = Http::post($this->httpHostPoviyaPay().'/api/cybersource/signeddatafields', $params);
+        //$responseSigneddatafileds = Http::post($this->httpHostPoviyaPay().'/api/cybersource/signeddatafields', $params);
 
-        $values = $responseSigneddatafileds->json();
+        //$values = $responseSigneddatafileds->json();
+        $values = $this->signeddatafiels($params); //dd($values);
+
         $this->params = $values['data']; 
         $this->signInput = $values['sign']; //dd($this->signInput);  
         /*

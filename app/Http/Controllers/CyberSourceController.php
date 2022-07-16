@@ -12,17 +12,17 @@ class CyberSourceController extends Controller
 
     public $HMAC_SHA256 = 'sha256';
     //  test
-    /*
+
     public $SECRET_KEY = 'e900a9b1e2f745988d97102e95c9f32d299dc62dbfa84790aa176fb94d69440a44cd3933821c4647a0385551cf6fd137ca6177a1d0f845ca862b0b4c467bef65f7abcf5b51ee4fbe9d1b0a635628f077e9ccae723bd24fd097dd616b5716a2d9dea1fb9242754ebab73f58a47fd4b29858dfeb68fbcc49948b12d869d3ce9376';
     public $access_key = 'a228c5c36ab6353486d7a2c468f73c06';
     public $profile_id = 'E9747F8E-5F21-4E53-B300-927EAC49E206';
-    */
-    // production
     
+    // production
+    /*
     public $SECRET_KEY = '29499710c5644eb894ad4570d5d96058a859cba6a645474e9f556e454ed1f0995906d04889364d3080eef883dd562ac93d40c7abc7a347f58c32ee9e857fb8dd07f3b4f992fd4950a2dc23a38dde8b21b0e0e8e2405f424c89e4ea771fc3f7777749fc6fabc549afbc6164953f42329f8c44f9ec29114dea918dc6bf940ad39e';
     public $access_key = '47fd0808ac3039b3b57c87160dea2a2f';
     public $profile_id = 'E00FEC0B-376A-467D-AF8A-E6C026619265';
-    
+    */
     // endpotint
     // test
     // https://testsecureacceptance.cybersource.com/silent/pay

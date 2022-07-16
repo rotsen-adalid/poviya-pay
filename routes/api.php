@@ -17,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+/* ------------- CYBERSOURCE -----------*/
+use App\Http\Controllers\CyberSourceController;
+Route::post('/cybersource/signeddatafields', [CyberSourceController::class, 'signeddatafiels']);
+Route::post('/cybersource/notification', [CyberSourceController::class, 'notification']);

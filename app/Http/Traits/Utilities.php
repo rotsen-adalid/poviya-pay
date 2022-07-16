@@ -101,7 +101,7 @@ trait Utilities {
     public function httpHostPoviyaPay()
     {
         if(env('APP_ENV') != 'production') {
-            $this->hostReturn = 'http://127.0.0.1:1300';
+            $this->hostReturn = 'http://poviya-pay.test';
         } else {
             $this->hostReturn = 'https://pay.poviya.com';
         }
@@ -133,17 +133,7 @@ trait Utilities {
     public function httpHostYoSolidario()
     {
         if(env('APP_ENV') != 'production') {
-            $this->hostReturn = 'http://127.0.0.1:5000';
-        } else {
-            $this->hostReturn = 'https://yosolidario.com';
-        }
-        return $this->hostReturn;
-    }
-
-    public function httpHostPoviyaForm()
-    {
-        if(env('APP_ENV') != 'production') {
-            $this->hostReturn = 'http://127.0.0.1:5000';
+            $this->hostReturn = 'http://yosolidario.test';
         } else {
             $this->hostReturn = 'https://yosolidario.com';
         }
