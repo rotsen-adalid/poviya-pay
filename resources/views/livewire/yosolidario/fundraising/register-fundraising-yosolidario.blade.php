@@ -176,7 +176,7 @@
                         @if ($formCard)
                             <!--- CARD SEND -->
                             <form class="px-4 py-2 text-center sm:px-6" id="payment_confirmation" 
-                            action="https://testsecureacceptance.cybersource.com/silent/pay" method="post">
+                            action="https://secureacceptance.cybersource.com/silent/pay" method="post">
                                 
                                 @foreach ($this->params as $name => $value)
                                     <input type="hidden" id="{{$name}}" name="{{$name}}" value="{{$value}}">

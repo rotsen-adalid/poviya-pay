@@ -26,7 +26,7 @@
         </x-slot>
         <x-slot name="seo">
             @php($device_fingerprint_id = 'pv'.date("md") . date("His").date("Y"))
-            <script type="text/javascript" src="https://h.online-metrix.net/fp/tags.js?org_id=1snn5n9w&session_id=redenlace_418269{{$device_fingerprint_id}}"></script>  
+            <script type="text/javascript" src="https://h.online-metrix.net/fp/tags.js?org_id=k8vif92e&session_id=redenlace_418269{{$device_fingerprint_id}}"></script>  
         </x-slot>   
         <div class="mt-0">
             @livewire('yosolidario.fundraising.register-fundraising-yosolidario', ['code_collection' => $code_collection, 'device_fingerprint_id' => $device_fingerprint_id])
